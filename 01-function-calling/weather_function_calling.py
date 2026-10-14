@@ -9,12 +9,42 @@ Cách chạy:
     python weather_function_calling.py
 """
 
+import os
+from pathlib import Path
+
 from google import genai
 from google.genai import types
 
-client = genai.Client()
 
-MODEL = "gemini-2.5-flash"
+def _load_local_env() -> None:
+    """Read 01-function-calling/.env. Shell variables win over the file."""
+    env_path = Path(__file__).with_name(".env")
+    if not env_path.is_file():
+        return
+    for raw in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            os.environ.setdefault(key, value)
+
+
+def _require_gemini_client() -> genai.Client:
+    _load_local_env()
+    if not (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")):
+        raise SystemExit(
+            "Thiếu API key. Tạo 01-function-calling/.env với GEMINI_API_KEY "
+            "(hoặc GOOGLE_API_KEY), hoặc export biến đó rồi chạy lại."
+        )
+    return genai.Client()
+
+# gemini-2.5-flash trả 404 với API key mới (Google yêu cầu dòng 3.x).
+# Đổi bằng GEMINI_MODEL nếu cần. gemini-3.8-flash đúng tên thay thế nhưng
+# thường quá tải; gemini-3.5-flash-lite chạy ổn định và vẫn có function calling.
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
 SYSTEM_INSTRUCTION = (
     "Bạn là trợ lý thời tiết thân thiện, trả lời bằng tiếng Việt tự nhiên. "
@@ -72,6 +102,7 @@ def get_weather(city: str) -> str:
 
 def run(prompt: str) -> str:
     """Gửi *prompt* tới Gemini, tự động xử lý function calling và trả về câu trả lời cuối."""
+    client = _require_gemini_client()
     contents: list[types.Content] = [
         types.Content(role="user", parts=[types.Part.from_text(text=prompt)])
     ]

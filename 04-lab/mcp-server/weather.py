@@ -1,8 +1,27 @@
 from typing import Any
-import asyncio
 import httpx
 import os
+from pathlib import Path
 from mcp.server.fastmcp import FastMCP
+
+
+def _load_local_env() -> None:
+    """Load mcp-server/.env without overriding variables already set in the shell."""
+    env_path = Path(__file__).with_name(".env")
+    if not env_path.is_file():
+        return
+    for raw in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            os.environ.setdefault(key, value)
+
+
+_load_local_env()
 
 # Initialize FastMCP server
 port = int(os.getenv("PORT", 8085))
@@ -12,7 +31,7 @@ mcp = FastMCP("weather", host="0.0.0.0", port=port)
 WEATHERAPI_BASE = "https://api.weatherapi.com/v1"
 USER_AGENT = "weather-app/1.0"
 
-# Get API key from environment variable
+# Get API key from environment variable or mcp-server/.env
 API_KEY = os.getenv("WEATHERAPI_KEY")
 
 async def make_weather_request(endpoint: str, params: dict[str, str]) -> dict[str, Any] | None:
@@ -140,13 +159,13 @@ print("🔧 Available tools: get_current_weather, get_forecast, health_check")
 
 if __name__ == "__main__":
     import sys
-    
-    is_cloud_run = bool(os.getenv("PORT"))
-    is_standalone = len(sys.argv) == 1 and sys.stdin.isatty()
-    
-    if is_cloud_run or is_standalone:
+
+    # Lab 04 luôn phục vụ Streamable HTTP (local :8085 hoặc Cloud Run qua PORT).
+    # Đặt MCP_TRANSPORT=stdio chỉ khi một client MCP spawn process này.
+    transport = os.getenv("MCP_TRANSPORT", "streamable-http").strip().lower()
+    if transport == "stdio":
+        print("Starting FastMCP server in stdio mode", file=sys.stderr)
+        mcp.run()
+    else:
         print(f"🚀 Starting MCP server on http://0.0.0.0:{port}/mcp")
         mcp.run(transport="streamable-http")
-    else:
-        print("Starting FastMCP server in stdio mode for local client", file=sys.stderr)
-        mcp.run()

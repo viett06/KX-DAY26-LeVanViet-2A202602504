@@ -19,7 +19,8 @@ import os
 from mcp import ClientSession
 from mcp.client.streamable_http import create_mcp_http_client, streamable_http_client
 
-SERVER_URL = "http://localhost:8000/mcp"
+PORT = os.environ.get("AUTH_MCP_PORT", "8000")
+SERVER_URL = os.environ.get("AUTH_MCP_URL", f"http://localhost:{PORT}/mcp")
 TOKEN = os.environ.get("MCP_AUTH_TOKEN", "dev-token-abc123")
 
 

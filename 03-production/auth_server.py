@@ -45,11 +45,18 @@ class StaticTokenVerifier(TokenVerifier):
 
 
 # --- MCP Server — logic tool không biết gì về auth --------------------
+# Cổng mặc định 8000 theo README. Đổi bằng AUTH_MCP_PORT nếu cổng đó đang bị chiếm.
+HOST = os.environ.get("AUTH_MCP_HOST", "0.0.0.0")
+PORT = int(os.environ.get("AUTH_MCP_PORT", "8000"))
+PUBLIC_URL = os.environ.get("AUTH_MCP_PUBLIC_URL", f"http://localhost:{PORT}")
+
 mcp = MCPServer(
     "weather-secure",
     auth=AuthSettings(
-        issuer_url="http://localhost:8000",
-        resource_server_url="http://localhost:8000",
+        issuer_url=PUBLIC_URL,
+        resource_server_url=PUBLIC_URL,
+        # Token tĩnh không có audience. Giữ False để SDK 3.x không từ chối token hợp lệ.
+        validate_token_resource=False,
     ),
     token_verifier=StaticTokenVerifier(),
 )
@@ -68,4 +75,5 @@ def get_weather(city: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=8000)
+    print(f"Auth MCP server: {PUBLIC_URL}/mcp")
+    mcp.run(transport="streamable-http", host=HOST, port=PORT)

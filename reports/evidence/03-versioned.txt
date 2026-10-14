@@ -1,0 +1,40 @@
+Server: weather-v2 v2.0.0
+Deprecated tools: ['get_weather']
+Migration: Chuyển từ get_weather sang get_weather_v2. Tham số 'city' giữ nguyên, thêm include_forecast và units.
+
+Tools:
+  - get_weather: [v1] Lấy thời tiết hiện tại — trả chuỗi đơn giản. Deprecated, dùng get_weather_v2.
+  - get_weather_v2: [v2] Lấy thời tiết chi tiết — JSON, hỗ trợ forecast và đơn vị đo.
+
+    Args:
+        city: Tên thành phố (ví dụ: Hanoi, Danang)
+        include_forecast: Có trả thêm dự báo 2 ngày tới không (mặc định: False)
+        units: Đơn vị nhiệt độ — "celsius" hoặc "fahrenheit" (mặc định: celsius)
+    
+
+[v1] get_weather('Hanoi'):
+  Hanoi: 29°C, trời mưa
+
+[v2] get_weather_v2('Hanoi', forecast=True):
+  {
+  "api_version": "2.0",
+  "city": "Hanoi",
+  "temp": 29,
+  "units": "celsius",
+  "condition": "trời mưa",
+  "humidity": 82,
+  "wind_speed_kmh": 12,
+  "timestamp": "2026-10-14T13:25:34.297932+00:00",
+  "forecast": [
+    {
+      "day": "tomorrow",
+      "temp": 27,
+      "condition": "mưa nhẹ"
+    },
+    {
+      "day": "day_after",
+      "temp": 31,
+      "condition": "nắng"
+    }
+  ]
+}

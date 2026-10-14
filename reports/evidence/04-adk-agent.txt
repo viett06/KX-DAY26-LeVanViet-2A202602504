@@ -1,0 +1,66 @@
+/Users/levanviet/Documents/Workspace/th_lab_vin/KX-DAY26-LeVanViet-2A202602504/04-lab/mcp-client/.venv/lib/python3.12/site-packages/google/adk/features/_feature_decorator.py:72: UserWarning: [EXPERIMENTAL] feature FeatureName.PLUGGABLE_AUTH is enabled.
+  check_feature_enabled()
+INFO:weather_agent.agent:🌐 Initializing weather agent with remote MCP server
+INFO:weather_agent.agent:📡 MCP Server: http://localhost:8085/mcp
+INFO:weather_agent.agent:🔌 Connecting to MCP server...
+INFO:weather_agent.agent:✅ MCP toolset created successfully
+INFO:weather_agent.agent:✅ Weather agent initialized with remote MCP tools:
+INFO:weather_agent.agent:   - get_current_weather(city)
+INFO:weather_agent.agent:   - get_forecast(city, days)
+INFO:weather_agent.agent:   - health_check()
+INFO:weather_agent.agent:🎉 Remote MCP connection successful!
+model=gemini-3.5-flash-lite
+mcp=http://localhost:8085/mcp
+agent=weather_agent tools=1
+
+User: Thời tiết hiện tại ở Hà Nội thế nào? Cho tôi dự báo 2 ngày ở Đà Nẵng.
+
+WARNING:google_adk.google.adk.tools.mcp_tool.mcp_session_manager:Failed to configure mTLS using AsyncAuthorizedSession: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+/Users/levanviet/Documents/Workspace/th_lab_vin/KX-DAY26-LeVanViet-2A202602504/04-lab/mcp-client/.venv/lib/python3.12/site-packages/google/adk/tools/mcp_tool/mcp_toolset.py:304: UserWarning: [EXPERIMENTAL] feature FeatureName._MCP_GRACEFUL_ERROR_HANDLING is enabled.
+  session = await self._mcp_session_manager.create_session(
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+INFO:mcp.client.streamable_http:Received session ID: 9eaeb3402c72408792f3608d67df1810
+INFO:mcp.client.streamable_http:Negotiated protocol version: 2025-11-25
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 202 Accepted"
+INFO:httpx:HTTP Request: GET http://localhost:8085/mcp "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+/Users/levanviet/Documents/Workspace/th_lab_vin/KX-DAY26-LeVanViet-2A202602504/04-lab/mcp-client/.venv/lib/python3.12/site-packages/google/adk/features/_feature_decorator.py:72: UserWarning: [EXPERIMENTAL] feature FeatureName.BASE_AUTHENTICATED_TOOL is enabled.
+  check_feature_enabled()
+/Users/levanviet/Documents/Workspace/th_lab_vin/KX-DAY26-LeVanViet-2A202602504/04-lab/mcp-client/.venv/lib/python3.12/site-packages/google/adk/models/llm_request.py:256: UserWarning: [EXPERIMENTAL] feature FeatureName.JSON_SCHEMA_FOR_FUNC_DECL is enabled.
+  declaration = tool._get_declaration()
+INFO:google_adk.google.adk.models.google_llm:Sending out request, model: gemini-3.5-flash-lite, backend: GoogleLLMVariant.GEMINI_API, stream: False
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:google_adk.google.adk.models.google_llm:Response received from the model.
+  [tool call] get_current_weather({'city': 'Hanoi'})
+  [tool call] get_forecast({'days': 2, 'city': 'Danang'})
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+  [tool result] get_current_weather: {'content': [{'type': 'text', 'text': '\nCurrent Weather for Hanoi, , Vietnam:\n\nTemperature: 28.8°C (83.8°F)\nFeels like: 31.7°C (89.1°F)\nCondition: Cloudy\nHumidity: 67%\nWind: 17.6 km/h (11.0 mph) SSE\nPressure: 1014.0 mb\nUV Index: 0.0\nVisibility: 7.4 km\n\nLast updated: 2026-10-14 20:15\n'}], 'structuredContent': {'result': '\nCurrent Weather for Hanoi, , Vietnam:\n\nTemperature: 28.8°C (83.8°F)\nFeels like: 31.7°C (89.1°F)\nCondition: Cloudy\nHumidity: 67%\nWind: 17.6 km/h (11.0 mph) SSE\nPressure: 1014.0 mb\nUV Index: 0.0\nVisibility: 7.4 km\n\nLast updated: 2026-10-14 20:15\n'}, 'isError': False}
+  [tool result] get_forecast: {'content': [{'type': 'text', 'text': 'Weather Forecast for Danang, , Vietnam:\n---\n\n2026-10-14:\nHigh: 27.3°C (81.1°F)\nLow: 21.4°C (70.5°F)\nCondition: Fog\nChance of Rain: 86%\nMax Wind: 7.6 km/h\nUV Index: 9.2\n\n---\n\n2026-10-15:\nHigh: 28.9°C (84.0°F)\nLow: 20.4°C (68.8°F)\nCondition: Fog\nChance of Rain: 60%\nMax Wind: 7.9 km/h\nUV Index: 9.0\n'}], 'structuredContent': {'result': 'Weather Forecast for Danang, , Vietnam:\n---\n\n2026-10-14:\nHigh: 27.3°C (81.1°F)\nLow: 21.4°C (70.5°F)\nCondition: Fog\nChance of Rain: 86%\nMax Wind: 7.6 km/h\nUV Index: 9.2\n\n---\n\n2026-10-15:\nHigh: 28.9°C (84.0°F)\nLow: 20.4°C (68.8°F)\nCondition: Fog\nChance of Rain: 60%\nMax Wind: 7.9 km/h\nUV I
+INFO:google_adk.google.adk.models.google_llm:Sending out request, model: gemini-3.5-flash-lite, backend: GoogleLLMVariant.GEMINI_API, stream: False
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:google_adk.google.adk.models.google_llm:Response received from the model.
+Thời tiết hiện tại ở **Hà Nội**: 
+- Nhiệt độ: 28.8°C (cảm giác như 31.7°C), trời nhiều mây, độ ẩm 67%.
+
+Dự báo 2 ngày tới tại **Đà Nẵng**:
+- **Ngày 14/10/2026**: Nhiệt độ 21.4°C - 27.3°C, có sương mù, khả năng mưa cao (86%).
+- **Ngày 15/10/2026**: Nhiệt độ 20.4°C - 28.9°C, có sương mù, khả năng mưa 60%.
+
+💡 **Mẹo thực tế**: Vì Đà Nẵng có khả năng mưa cao và sương mù trong những ngày tới, bạn nên mang theo ô/dù và cẩn thận khi lái xe giảm tầm nhìn nhé!
+
+User: Dịch vụ thời tiết có đang chạy không?
+
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+INFO:google_adk.google.adk.models.google_llm:Sending out request, model: gemini-3.5-flash-lite, backend: GoogleLLMVariant.GEMINI_API, stream: False
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:google_adk.google.adk.models.google_llm:Response received from the model.
+  [tool call] health_check({})
+INFO:httpx:HTTP Request: POST http://localhost:8085/mcp "HTTP/1.1 200 OK"
+  [tool result] health_check: {'content': [{'type': 'text', 'text': '✅ Weather MCP Server is running! Ready to provide weather data for Australian cities and worldwide.'}], 'structuredContent': {'result': '✅ Weather MCP Server is running! Ready to provide weather data for Australian cities and worldwide.'}, 'isError': False}
+INFO:google_adk.google.adk.models.google_llm:Sending out request, model: gemini-3.5-flash-lite, backend: GoogleLLMVariant.GEMINI_API, stream: False
+INFO:httpx:HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:google_adk.google.adk.models.google_llm:Response received from the model.
+Có, dịch vụ thời tiết hiện đang hoạt động bình thường và sẵn sàng cung cấp dữ liệu. 
+
+💡 **Mẹo thực tế**: Bạn có thể tra cứu thông tin thời tiết bất cứ lúc nào khi cần lên kế hoạch di chuyển!

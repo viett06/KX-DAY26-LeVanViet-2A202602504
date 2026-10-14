@@ -4,11 +4,14 @@ FROM python:3.12-slim
 # Set working directory
 WORKDIR /app
 
-# Copy dependency files
-COPY pyproject.toml ./
+# Copy dependency files. The app is a script (weather.py), not an installable package.
+COPY pyproject.toml uv.lock ./
 
-# Install dependencies
-RUN pip install --no-cache-dir -e .
+# Install locked dependencies into the image Python, without installing this repo as a package.
+RUN pip install --no-cache-dir uv \
+    && uv export --frozen --no-dev --no-emit-project -o /tmp/requirements.txt \
+    && uv pip install --system --no-cache -r /tmp/requirements.txt \
+    && rm /tmp/requirements.txt
 
 # Copy application code
 COPY weather.py ./

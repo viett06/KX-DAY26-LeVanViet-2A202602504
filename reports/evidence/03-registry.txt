@@ -1,0 +1,26 @@
+=== Tool Registry ===
+
+  get_weather v1.0.0
+    Lấy thời tiết hiện tại của một thành phố
+    tags: ['weather', 'current', 'vietnam']  →  server: weather
+  get_weather_v2 v2.0.0
+    Lấy thời tiết chi tiết — JSON, hỗ trợ forecast và đơn vị đo
+    tags: ['weather', 'forecast', 'detailed', 'vietnam']  →  server: weather-v2
+  send_email v1.0.0
+    Gửi email tới một hoặc nhiều người nhận
+    tags: ['email', 'notification', 'communication']  →  server: email-service
+  query_db v1.2.0
+    Chạy truy vấn SQL trên database nội bộ
+    tags: ['database', 'sql', 'query', 'analytics']  →  server: db-gateway
+
+--- Agent cần tool có tag "weather" ---
+Tìm thấy 2 tool(s):
+  • get_weather v1.0.0 (server: weather)
+  • get_weather_v2 v2.0.0 (server: weather-v2)
+
+Best match: get_weather_v2 v2.0.0
+Kết nối tới server [weather-v2]...
+Kết quả: {"api_version": "2.0", "city": "Hanoi", "temp": 29, "units": "celsius", "condition": "trời mưa", "humidity": 82, "wind_speed_kmh": 12, "timestamp": "2026-10-14T13:25:34.251465+00:00"}
+
+--- Agent tìm tool có keyword "forecast" ---
+  • get_weather_v2: Lấy thời tiết chi tiết — JSON, hỗ trợ forecast và đơn vị đo

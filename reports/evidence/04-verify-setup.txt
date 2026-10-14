@@ -1,0 +1,51 @@
+============================================================
+Weather Agent Setup Verification
+============================================================
+
+🔍 Checking environment configuration...
+✅ GOOGLE_API_KEY configured (ẩn trong báo cáo)
+
+🔍 Checking dependencies...
+✅ Google ADK
+/Users/levanviet/Documents/Workspace/th_lab_vin/KX-DAY26-LeVanViet-2A202602504/04-lab/mcp-client/verify_setup.py:49: FutureWarning: 
+
+All support for the `google.generativeai` package has ended. It will no longer be receiving 
+updates or bug fixes. Please switch to the `google.genai` package as soon as possible.
+See README for more details:
+
+https://github.com/google-gemini/deprecated-generative-ai-python/blob/main/README.md
+
+  __import__(package)
+✅ Google Generative AI
+✅ MCP
+✅ FastMCP
+✅ python-dotenv
+✅ httpx
+
+🔍 Checking agent structure...
+✅ weather_agent/agent.py
+✅ weather_agent/__init__.py
+
+🔍 Checking MCP server connectivity...
+✅ MCP server reachable at http://localhost:8085/mcp (HTTP 406)
+
+🔍 Checking agent import...
+INFO:weather_agent.agent:🌐 Initializing weather agent with remote MCP server
+INFO:weather_agent.agent:📡 MCP Server: http://localhost:8085/mcp
+INFO:weather_agent.agent:🔌 Connecting to MCP server...
+INFO:weather_agent.agent:✅ MCP toolset created successfully
+INFO:weather_agent.agent:✅ Weather agent initialized with remote MCP tools:
+INFO:weather_agent.agent:   - get_current_weather(city)
+INFO:weather_agent.agent:   - get_forecast(city, days)
+INFO:weather_agent.agent:   - health_check()
+INFO:weather_agent.agent:🎉 Remote MCP connection successful!
+✅ Agent imported successfully: weather_agent
+   Model: gemini-3.5-flash-lite
+
+============================================================
+✅ All checks passed!
+
+🚀 Ready to start!
+   Run: uv run adk web
+
+📍 Then open: http://localhost:8000
